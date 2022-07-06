@@ -1,7 +1,7 @@
 package com.CentrumGuy.PlayerSimulator.NMSUtils;
 
-import net.minecraft.server.v1_12_R1.EnumProtocolDirection;
-import net.minecraft.server.v1_12_R1.NetworkManager;
+import net.minecraft.server.v1_8_R3.EnumProtocolDirection;
+import net.minecraft.server.v1_8_R3.NetworkManager;
 
 public class DummyNetworkManager extends NetworkManager implements Cloneable {
     //private IChatBaseComponent ichatbasecomponent;

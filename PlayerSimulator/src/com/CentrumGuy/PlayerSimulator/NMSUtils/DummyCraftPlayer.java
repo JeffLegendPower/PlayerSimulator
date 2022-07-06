@@ -1,10 +1,10 @@
 package com.CentrumGuy.PlayerSimulator.NMSUtils;
 
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.scoreboard.Scoreboard;
 
-import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 
 public class DummyCraftPlayer extends CraftPlayer {
 	public DummyCraftPlayer(CraftServer server, EntityPlayer entity) {

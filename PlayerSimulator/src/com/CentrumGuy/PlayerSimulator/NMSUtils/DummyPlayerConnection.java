@@ -1,12 +1,12 @@
 package com.CentrumGuy.PlayerSimulator.NMSUtils;
 
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 
-import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
-import net.minecraft.server.v1_12_R1.NetworkManager;
-import net.minecraft.server.v1_12_R1.Packet;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
+import net.minecraft.server.v1_8_R3.NetworkManager;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PlayerConnection;
 
 public class DummyPlayerConnection extends PlayerConnection {
     @SuppressWarnings("unused")
@@ -34,7 +34,7 @@ public class DummyPlayerConnection extends PlayerConnection {
         ((CraftServer) Bukkit.getServer()).getHandle().players.remove(player);
     }*/
     
-    public void sendPacket(Packet<?> packet) {
+    public void sendPacket(Packet packet) {
     	//if (packet instanceof PacketPlayOutUpdateTime) super.sendPacket(packet);
     }
 

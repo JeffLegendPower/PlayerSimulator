@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
+import net.minecraft.server.v1_8_R3.*;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.CentrumGuy.PlayerSimulator.GUI.BotMenu;
@@ -28,30 +29,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import net.minecraft.server.v1_12_R1.ChunkRegionLoader;
-import net.minecraft.server.v1_12_R1.DedicatedPlayerList;
-import net.minecraft.server.v1_12_R1.Entity;
-import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.EnumProtocolDirection;
-import net.minecraft.server.v1_12_R1.LocaleI18n;
-import net.minecraft.server.v1_12_R1.MobEffect;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NetworkManager;
-import net.minecraft.server.v1_12_R1.PacketDataSerializer;
-import net.minecraft.server.v1_12_R1.PacketPlayOutAbilities;
-import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityEffect;
-import net.minecraft.server.v1_12_R1.PacketPlayOutHeldItemSlot;
-import net.minecraft.server.v1_12_R1.PacketPlayOutLogin;
-import net.minecraft.server.v1_12_R1.PacketPlayOutServerDifficulty;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
-import net.minecraft.server.v1_12_R1.PlayerInteractManager;
-import net.minecraft.server.v1_12_R1.PlayerList;
-import net.minecraft.server.v1_12_R1.ScoreboardServer;
-import net.minecraft.server.v1_12_R1.ServerConnection;
-import net.minecraft.server.v1_12_R1.UserCache;
-import net.minecraft.server.v1_12_R1.WorldData;
-import net.minecraft.server.v1_12_R1.WorldServer;
 
 public class Bot {
 	private static int botNum = 0;
@@ -203,15 +180,14 @@ public class Bot {
         //pl.a(entityplayer, (EntityPlayer) null, worldserver);
         PlayerConnection playerconnection = new DummyPlayerConnection(pl.getServer(), networkmanager, entityplayer);
 
-        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), worlddata.isHardcore(), worldserver.worldProvider.getDimensionManager().getDimensionID(), worldserver.getDifficulty(), pl.getMaxPlayers(), worlddata.getType(), worldserver.getGameRules().getBoolean("reducedDebugInfo")));
+        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), worlddata.isHardcore(), worldserver.worldProvider.getDimension(), worldserver.getDifficulty(), pl.getMaxPlayers(), worlddata.getType(), worldserver.getGameRules().getBoolean("reducedDebugInfo")));
         entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
         playerconnection.sendPacket(new PacketPlayOutCustomPayload("MC|Brand", (new PacketDataSerializer(Unpooled.buffer())).a(pl.getServer().getServerModName())));
         playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
         playerconnection.sendPacket(new PacketPlayOutAbilities(entityplayer.abilities));
         playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
-        pl.f(entityplayer);
+        entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) 28));
         entityplayer.getStatisticManager().c();
-        entityplayer.F().a(entityplayer);
         pl.sendScoreboard((ScoreboardServer) worldserver.getScoreboard(), entityplayer);
         pl.getServer().aD();
         // CraftBukkit start - login message is handled in the event
