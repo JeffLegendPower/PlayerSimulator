@@ -1,13 +1,11 @@
 package com.CentrumGuy.PlayerSimulator;
 
+import com.CentrumGuy.PlayerSimulator.Utils.TPSCheck;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.CentrumGuy.PlayerSimulator.Utils.TPSCheck;
-import org.bukkit.util.Vector;
 
 public class MainCommand implements CommandExecutor {
 	@SuppressWarnings("deprecation")
@@ -45,7 +43,7 @@ public class MainCommand implements CommandExecutor {
             float tps = 0;
             for (Long l : TPSCheck.history) {
                 if (l != null)
-                    tps += 20 / (l / 1000);
+                    tps += 20F / (l / 1000);
             }
             tps = tps / TPSCheck.history.size();
 
@@ -102,17 +100,7 @@ public class MainCommand implements CommandExecutor {
         	}
         	
         	bot.getMainMenu().open((Player) sender);
-        } else if (command.getName().equalsIgnoreCase("bounce")) { // TESTING PURPOSES ONLY
-			String botName = args[0];
-			Bot bot = null;
-			for (Bot b : Bot.bots) {
-				if (b.getBot().getName().equalsIgnoreCase(botName)) bot = b;
-			}
-
-			if (bot != null) {
-				bot.getBot().setVelocity(new Vector(0, 4, 0));
-			}
-		}
+        }
         
         return true;
     }

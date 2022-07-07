@@ -1,12 +1,7 @@
 package com.CentrumGuy.PlayerSimulator.NMSUtils;
 
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.NetworkManager;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
 
 public class DummyPlayerConnection extends PlayerConnection {
     @SuppressWarnings("unused")

@@ -93,7 +93,7 @@ public class Bot {
         } catch (Exception e) {
         	e.printStackTrace();
         }
-        
+
         /*try {
             Bootstrap b = new Bootstrap();
             b.option(ChannelOption.TCP_NODELAY, true);
@@ -121,7 +121,7 @@ public class Bot {
         }*/
 
         WorldServer world = ((CraftWorld) loc.getWorld()).getHandle();
-        botEntity = new DummyEntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, gameProfile, new PlayerInteractManager(world));
+        botEntity = new DummyEntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, gameProfile, new PlayerInteractManager(world), this);
         bot = botEntity.getBukkitEntity();
         
         //playerList.a(network, botEntity);
@@ -297,6 +297,10 @@ public class Bot {
 	public MainMenu getMainMenu() {
 		return this.mainMenu;
 	}
+
+    public EntityPlayer getBotEntity() {
+        return this.botEntity;
+    }
 	
 	public static boolean isBot(Player p) {
 		for (Bot b : Bot.getBots()) {

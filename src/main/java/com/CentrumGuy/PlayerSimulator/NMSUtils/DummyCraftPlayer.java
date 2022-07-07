@@ -1,5 +1,6 @@
 package com.CentrumGuy.PlayerSimulator.NMSUtils;
 
+import com.CentrumGuy.PlayerSimulator.Bot;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.scoreboard.Scoreboard;
@@ -7,8 +8,12 @@ import org.bukkit.scoreboard.Scoreboard;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 
 public class DummyCraftPlayer extends CraftPlayer {
-	public DummyCraftPlayer(CraftServer server, EntityPlayer entity) {
+
+	private final Bot bot;
+
+	public DummyCraftPlayer(CraftServer server, EntityPlayer entity, Bot bot) {
 		super(server, entity);
+		this.bot = bot;
 	}
 
 	public void setScoreboard(Scoreboard scoreboard) {
@@ -23,5 +28,9 @@ public class DummyCraftPlayer extends CraftPlayer {
         }
 
         this.server.getScoreboardManager().setPlayerBoard(this, scoreboard);*/
+	}
+
+	public Bot getBot() {
+		return bot;
 	}
 }
