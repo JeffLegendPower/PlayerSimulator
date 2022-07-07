@@ -2,8 +2,8 @@ package com.CentrumGuy.PlayerSimulator.GUI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,8 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.CentrumGuy.PlayerSimulator.Bot;
 import com.CentrumGuy.PlayerSimulator.Utils.Items;
 
-import net.minecraft.server.v1_12_R1.EnumItemSlot;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 
 public class InvMenu extends BotMenu {
 	public static ItemStack helmet = Items.createItem(Material.LEATHER_HELMET, 1, 0, "§a§lHelmet", "§7Place below");
@@ -27,7 +26,6 @@ public class InvMenu extends BotMenu {
 	public InvMenu(Bot bot) {
 		super(MenuType.INVENTORY, bot);
 		this.inv = Bukkit.createInventory(bot.getBot(), 54, "Inventory Contents - " + bot.getBot().getName());
-		
 		update();
 	}
 
@@ -66,28 +64,28 @@ public class InvMenu extends BotMenu {
 			this.getBot().getBot().getInventory().setHelmet(e.getCursor());
 			
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				PacketPlayOutEntityEquipment helmet = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getHelmet()));
+				PacketPlayOutEntityEquipment helmet = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), 1, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getHelmet()));
 				((CraftPlayer) p).getHandle().playerConnection.sendPacket(helmet);
 			}
 		} else if (e.getRawSlot() == 12) {
 			this.getBot().getBot().getInventory().setChestplate(e.getCursor());
 			
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				PacketPlayOutEntityEquipment chest = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getChestplate()));
+				PacketPlayOutEntityEquipment chest = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), 2, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getChestplate()));
 				((CraftPlayer) p).getHandle().playerConnection.sendPacket(chest);
 			}
 		} else if (e.getRawSlot() == 14) {
 			this.getBot().getBot().getInventory().setLeggings(e.getCursor());
 
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				PacketPlayOutEntityEquipment pants = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getLeggings()));
+				PacketPlayOutEntityEquipment pants = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), 3, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getLeggings()));
 				((CraftPlayer) p).getHandle().playerConnection.sendPacket(pants);
 			}
 		} else if (e.getRawSlot() == 16) {
 			this.getBot().getBot().getInventory().setBoots(e.getCursor());
 			
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				PacketPlayOutEntityEquipment boots = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getBoots()));
+				PacketPlayOutEntityEquipment boots = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), 4, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getBoots()));
 				((CraftPlayer) p).getHandle().playerConnection.sendPacket(boots);
 			}
 		} else if (e.getRawSlot() <= 17) {
@@ -96,11 +94,8 @@ public class InvMenu extends BotMenu {
 			this.getBot().getBot().getInventory().setItem(e.getRawSlot() - 18, e.getCursor());
 			
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				PacketPlayOutEntityEquipment mainH = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getItemInMainHand()));
+				PacketPlayOutEntityEquipment mainH = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), 0, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getItemInHand()));
 				((CraftPlayer) p).getHandle().playerConnection.sendPacket(mainH);
-				
-				PacketPlayOutEntityEquipment offH = new PacketPlayOutEntityEquipment(this.getBot().getBot().getEntityId(), EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(this.getBot().getBot().getInventory().getItemInOffHand()));
-				((CraftPlayer) p).getHandle().playerConnection.sendPacket(offH);
 			}
 		}
 	}

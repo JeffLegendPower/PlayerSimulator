@@ -1,10 +1,9 @@
 package com.CentrumGuy.PlayerSimulator;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
+import com.CentrumGuy.PlayerSimulator.Utils.ReflectionUtils;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
@@ -32,7 +31,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class Bot {
 	private static int botNum = 0;
-	public static ArrayList<Bot> bots = new ArrayList<Bot>();
+	public static ArrayList<Bot> bots = new ArrayList<>();
 	
 	public static ArrayList<Bot> getBots() {
 		return bots;
@@ -223,35 +222,27 @@ public class Bot {
 
         if (nbttagcompound != null && nbttagcompound.hasKeyOfType("RootVehicle", 10)) {
             NBTTagCompound nbttagcompound1 = nbttagcompound.getCompound("RootVehicle");
-            Entity entity = ChunkRegionLoader.a(nbttagcompound1.getCompound("Entity"), worldserver, true);
+            Entity entity = EntityTypes.a(nbttagcompound1.getCompound("Entity"), worldserver); // may not work grr!!
 
             if (entity != null) {
-                UUID uuid = nbttagcompound1.a("Attach");
+                UUID uuid = NBTTagCompound_a("Attach", nbttagcompound1);
                 Iterator<?> iterator1;
                 Entity entity1;
 
                 if (entity.getUniqueID().equals(uuid)) {
-                    entityplayer.a(entity, true);
+                    entityplayer.playerConnection.a(
+                            entityplayer.locX,
+                            entityplayer.locY,
+                            entityplayer.locZ,
+                            entityplayer.yaw,
+                            entityplayer.pitch
+                    ); // might not work grr!!
                 } else {
-                    iterator1 = entity.bG().iterator();
 
-                    while (iterator1.hasNext()) {
-                        entity1 = (Entity) iterator1.next();
-                        if (entity1.getUniqueID().equals(uuid)) {
-                            entityplayer.a(entity1, true);
-                            break;
+                    if (entity.passenger != null) {
+                        if (entity.passenger.getUniqueID().equals(uuid)) {
+                            Entity_a(entity, entity.passenger, true);
                         }
-                    }
-                }
-
-                if (!entityplayer.isPassenger()) {
-                	LogManager.getLogger().warn("Couldn\'t reattach entity to player");
-                    worldserver.removeEntity(entity);
-                    iterator1 = entity.bG().iterator();
-
-                    while (iterator1.hasNext()) {
-                        entity1 = (Entity) iterator1.next();
-                        worldserver.removeEntity(entity1);
                     }
                 }
             }
@@ -260,6 +251,47 @@ public class Bot {
         entityplayer.syncInventory();
         // CraftBukkit - Moved from above, added world
         LogManager.getLogger().info(entityplayer.getName() + "[" + s1 + "] logged in with entity id " + entityplayer.getId() + " at ([" + entityplayer.world.worldData.getName() + "]" + entityplayer.locX + ", " + entityplayer.locY + ", " + entityplayer.locZ + ")");
+    }
+
+    private UUID NBTTagCompound_a(String var1, NBTTagCompound nbtTagCompound) {
+        return new UUID(nbtTagCompound.getLong(var1 + "Most"), nbtTagCompound.getLong(var1 + "Least"));
+    }
+
+    private Entity Entity_bG(Entity caller) {
+        HashSet<Entity> set = new HashSet<>();
+
+        if (caller.passenger != null) {
+            Entity.class.isAssignableFrom(caller.passenger.getClass());
+            set.add(caller.passenger);
+            return caller.passenger;
+        }
+        return null;
+    }
+
+    private boolean Entity_a(Entity caller, Entity entity, boolean flag) {
+        for(Entity entity1 = entity; entity1.vehicle != null; entity1 = entity1.vehicle) {
+            if (entity1.vehicle == caller) {
+                return false;
+            }
+        }
+
+        if (!flag && (!Entity_n(caller) || (entity.passenger != null))) {
+            return false;
+        } else {
+            if (caller.vehicle != null) {
+                caller.mount(null);
+            }
+
+            caller.vehicle = entity;
+            caller.vehicle.o(caller);
+            return true;
+        }
+    }
+
+    private boolean Entity_n(Entity caller) {
+
+        int al = (int) ReflectionUtils.getFieldValue(caller, "al");
+        return al <= 0;
     }
 	
 	public MainMenu getMainMenu() {

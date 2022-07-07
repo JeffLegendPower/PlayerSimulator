@@ -152,7 +152,7 @@ public class Items {
         return CraftItemStack.asBukkitCopy(is);*/
 		
 		ItemMeta meta = item.getItemMeta();
-		meta.setUnbreakable(true);
+		meta.spigot().setUnbreakable(true);
 		item.setItemMeta(meta);
 		return item;
     }
